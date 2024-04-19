@@ -63,11 +63,11 @@ try:
     col3, col4, col5 = st.columns(3)
 
     with col3:
-        score = st.number_input("Score")
+        score = st.number_input("Score", min_value=0)
     with col4:
-        overs = st.number_input("Overs completed")
+        overs = st.number_input("Overs completed", min_value=0, max_value=20)
     with col5:
-        wickets = st.number_input("Wickets out")
+        wickets = st.selectbox("Wickets out", [w for w in range(11)])
 
     if st.button("Predict Probability"):
         if batting_team != bowling_team:
