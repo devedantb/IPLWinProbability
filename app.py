@@ -70,6 +70,7 @@ try:
         wickets = st.selectbox("Wickets out", [w for w in range(11)])
 
     if st.button("Predict Probability"):
+        actual_wickets = wickets
         if batting_team != bowling_team:
             runs_left = target - score
             balls_left = 120 - (overs * 6)
@@ -94,8 +95,15 @@ try:
             result = pipe.predict_proba(input_df)
             loss = result[0][0]
             win = result[0][1]
-            st.header(batting_team + "- " + str(round(win * 100)) + "%")
-            st.header(bowling_team + "- " + str(round(loss * 100)) + "%")
+            if score > target:
+                st.header(f"{batting_team}  was already won the match")
+            elif actual_wickets == 10 and score < target:
+                st.header(
+                    f"Since {actual_wickets} have fallen, signifying that all players are out, {bowling_team} has already secured victory in the match."
+                )
+            else:
+                st.header(f"{batting_team} - {str(round(win * 100))} %")
+                st.header(f"{bowling_team} - {str(round(loss * 100))} %")
         else:
             st.error("Batting team and bolwling team must be diffrent")
 
